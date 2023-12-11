@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MovingObject // Inheritance
 {
+    public float restartLevelDelay = 1f;
     public int wallDamage = 1;
 
     private int food;
@@ -76,6 +77,20 @@ public class Player : MovingObject // Inheritance
         animator.SetTrigger("playerHit");
         food -= loss;
         CheckIfGameOver();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Exit")
+        {
+            Invoke("Restart", restartLevelDelay);
+            enabled = false;
+        }
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private void CheckIfGameOver()
