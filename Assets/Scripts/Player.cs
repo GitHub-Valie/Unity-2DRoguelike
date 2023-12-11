@@ -22,6 +22,11 @@ public class Player : MovingObject // Inheritance
 
     void Update()
     {
+        if (!GameManager.instance.playersTurn) // If it's not the player's turn, don't go further 
+        {
+            return;
+        }
+
         int horizontal = 0;
         int vertical = 0;
 
@@ -49,6 +54,8 @@ public class Player : MovingObject // Inheritance
         // RaycastHit2D hit;
 
         CheckIfGameOver(); // Check if food <= 0
+
+        GameManager.instance.playersTurn = false;
     }
 
     protected override void OnCantMove<T>(T component)
