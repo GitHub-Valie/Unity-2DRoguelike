@@ -5,10 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Player : MovingObject // Inheritance
 {
+    public int wallDamage = 1;
+
     private int food;
+    private Animator animator;
 
     protected override void Start()
     {
+        animator = GetComponent<Animator>();
         food = GameManager.instance.playerFoodPoints; // Data persistence of food value between levels
 
         base.Start();
@@ -58,9 +62,20 @@ public class Player : MovingObject // Inheritance
         GameManager.instance.playersTurn = false;
     }
 
+    // Handles cases where player is blocked by a wall
     protected override void OnCantMove<T>(T component)
     {
-        throw new System.NotImplementedException();
+        Wall hitWall = component as Wall;
+        hitWall.DamageWall(wallDamage);
+        animator.SetTrigger("playerChop");
+        // throw new System.NotImplementedException();
+    }
+
+    public void HitLoseFood(int loss)
+    {
+        animator.SetTrigger("playerHit");
+        food -= loss;
+        CheckIfGameOver();
     }
 
     private void CheckIfGameOver()
