@@ -10,7 +10,6 @@ public abstract class MovingObject : MonoBehaviour
     private BoxCollider2D boxCollider;
     private Rigidbody2D rb2d;
     private float inverseMoveTime;
-    private bool isMoving;
 
     protected virtual void Start() // Protected methods can be called from derived classes
     {
@@ -29,7 +28,7 @@ public abstract class MovingObject : MonoBehaviour
         hit = Physics2D.Linecast(start, end, blockingLayer);
         boxCollider.enabled = true;
 
-        if (hit.transform == null && !isMoving) // If nothing was hit ...
+        if (hit.transform == null) // If nothing was hit ...
         {
             StartCoroutine(SmoothMovement(end)); // ... use SmoothMovement
             return true; // ... Move returns true
@@ -41,8 +40,6 @@ public abstract class MovingObject : MonoBehaviour
     // Coroutine used to move units from one space to the next (end)
     protected IEnumerator SmoothMovement(Vector3 end)
     {
-        isMoving = true; // Set isMoving to true to enable movement
-
         // Logic to calculate the remaining distance to move
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
@@ -55,11 +52,7 @@ public abstract class MovingObject : MonoBehaviour
             sqrRemainingDistance = (transform.position - end).sqrMagnitude;
             yield return null;
         }
-        
-        rb2d.MovePosition(end);
-        isMoving = false;
-        // Debug.Log("Done moving");
-}
+    }
 
     /* AttemptMove: specify the type of component we expect our unit 
     to interact with if blocked (Player for Enemies, Wall for Player) */
