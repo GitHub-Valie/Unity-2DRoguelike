@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     // Static instance of GameManager which allows it to be accessed by any other script
     public static GameManager instance = null;
     public BoardManager boardScript;
+    public int playerFoodPoints = 100;
 
     private int level = 4;
 
@@ -30,5 +31,11 @@ public class GameManager : MonoBehaviour
     void InitGame()
     {
         boardScript.SetupScene(level);
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game is over");
+        enabled = false;
     }
 }
