@@ -7,6 +7,8 @@ public class Player : MovingObject // Inheritance
 {
     public float restartLevelDelay = 1f;
     public int wallDamage = 1;
+    public int pointsPerFood = 10;
+    public int pointsPerSoda = 20;
 
     private int food;
     private Animator animator;
@@ -85,6 +87,16 @@ public class Player : MovingObject // Inheritance
         {
             Invoke("Restart", restartLevelDelay);
             enabled = false;
+        }
+        else if (other.tag == "Food")
+        {
+            food += pointsPerFood;
+            other.gameObject.SetActive(false);
+        }
+        else if (other.tag == "Soda")
+        {
+            food += pointsPerSoda;
+            other.gameObject.SetActive(false);
         }
     }
 
