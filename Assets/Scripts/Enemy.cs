@@ -13,6 +13,7 @@ public class Enemy : MovingObject
     {
         // The enemy script adds itself to the list of enemies in the GameManager
         GameManager.instance.AddEnemyToList(this);
+        animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
         base.Start(); // box collider, rb2d, inverseMoveTime
     }
@@ -34,7 +35,7 @@ public class Enemy : MovingObject
     public void MoveEnemy() // Called by the GameManager when it issues the order to move to the enemies
     {
         // Implement logic to move enemy
-        Debug.Log("Enemy is moving");
+        // Debug.Log("Enemy is moving");
 
         int xDir = 0;
         int yDir = 0;
