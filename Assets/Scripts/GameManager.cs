@@ -2,19 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     // Static instance of GameManager which allows it to be accessed by any other script
+    public float levelStartDelay = 2f; // Time to wait before starting levels
     public float turnDelay = .1f;
     public static GameManager instance = null;
     public BoardManager boardScript;
     public int playerFoodPoints = 100;
     [HideInInspector] public bool playersTurn;
 
-    private int level = 1;
+    private Text levelText;
+    private GameObject levelImage;
+    private int level = 0;
     private List<Enemy> enemies; // Keeps track of enemies and their movement
     private bool enemiesMoving;
+    private bool doingSetup;
 
     void Awake()
     {
@@ -30,13 +35,26 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Persistence between scenes
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();
-        InitGame();
+        InitGame(); // Call InitGame to initialize the first level
     }
 
     void InitGame()
     {
+        doingSetup = true;
+        levelImage = GameObject.Find("LevelImage");
+        levelText = GameObject.Find("LevelText").GetComponent<Text>();
+        levelText.text = $"Day {level}";
+        levelImage.SetActive(true);
+        Invoke("HideLevelImage", levelStartDelay);
+
         enemies.Clear(); // Clear the list of enemies upon scene setup
         boardScript.SetupScene(level);
+    }
+
+    public void HideLevelImage()
+    {
+        levelImage.SetActive(false);
+        doingSetup = false;
     }
 
     // OnLevelFinishedLoading is called each time a scene is loaded
@@ -64,13 +82,14 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("Game is over");
+        levelImage.SetActive(true);
+        levelText.text = $"After {level} days, you starved.";
         enabled = false;
     }
 
     void Update()
     {
-        if (playersTurn || enemiesMoving) // Return as long as it's playersTurn or enemies are moving
+        if (playersTurn || enemiesMoving || doingSetup) // Return as long as it's playersTurn or enemies are moving
         {
             return;
         }

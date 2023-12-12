@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MovingObject // Inheritance
 {
@@ -9,6 +10,7 @@ public class Player : MovingObject // Inheritance
     public int wallDamage = 1;
     public int pointsPerFood = 10;
     public int pointsPerSoda = 20;
+    public Text foodText;
 
     private int food;
     private Animator animator;
@@ -17,7 +19,7 @@ public class Player : MovingObject // Inheritance
     {
         animator = GetComponent<Animator>();
         food = GameManager.instance.playerFoodPoints; // Data persistence of food value between levels
-
+        foodText.text = $"Food: {food}";
         base.Start();
     }
 
@@ -54,7 +56,7 @@ public class Player : MovingObject // Inheritance
     protected override void AttemptMove<T>(int xDir, int yDir)
     {
         food--;
-        Debug.Log($"Food: {food}");
+        foodText.text = $"Food: {food}";
 
         base.AttemptMove<T>(xDir, yDir);
 
@@ -78,6 +80,7 @@ public class Player : MovingObject // Inheritance
     {
         animator.SetTrigger("playerHit");
         food -= loss;
+        foodText.text = $"- {loss} Food: {food}";
         CheckIfGameOver();
     }
 
@@ -91,11 +94,13 @@ public class Player : MovingObject // Inheritance
         else if (other.tag == "Food")
         {
             food += pointsPerFood;
+            foodText.text = $"+ {pointsPerFood} Food: {food}";
             other.gameObject.SetActive(false);
         }
         else if (other.tag == "Soda")
         {
             food += pointsPerSoda;
+            foodText.text = $"+ {pointsPerFood} Food: {food}";
             other.gameObject.SetActive(false);
         }
     }
