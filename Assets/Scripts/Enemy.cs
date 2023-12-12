@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Enemy : MovingObject
 {
-
+    public int playerDamage;
     private Transform target; // Used to store the player's position
     private bool skipMove;
+    private Animator animator;
 
     protected override void Start()
     {
@@ -59,9 +60,14 @@ public class Enemy : MovingObject
     // Finally, what happens if the enemy attempts to move where the player is standing?
     protected override void OnCantMove<T>(T component) 
     {
-        // Handles cases where the enemy is blocked by the player
-        // Implement logic to hit player and make them lose food, for now, console log and throw an error
-        Debug.Log("Enemy is attacking player");
-        throw new System.NotImplementedException();
+        // Enemy's overriden OnCantMove handles cases where the enemy is blocked by the player
+        
+        // Implement logic to hit player and make them lose food  
+        Player hitPlayer = component as Player;
+        hitPlayer.HitLoseFood(playerDamage);
+        animator.SetTrigger("enemyAttack");
+        
+        // Debug.Log("Enemy is attacking player");
+        // throw new System.NotImplementedException();
     }
 }
