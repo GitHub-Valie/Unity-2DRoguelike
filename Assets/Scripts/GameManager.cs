@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class GameManager : MonoBehaviour
     public int playerFoodPoints = 100;
     [HideInInspector] public bool playersTurn;
 
-    private int level = 4;
+    private int level = 1;
     private List<Enemy> enemies; // Keeps track of enemies and their movement
     private bool enemiesMoving;
 
@@ -36,6 +37,28 @@ public class GameManager : MonoBehaviour
     {
         enemies.Clear(); // Clear the list of enemies upon scene setup
         boardScript.SetupScene(level);
+    }
+
+    // OnLevelFinishedLoading is called each time a scene is loaded
+    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        level++; // Add one to level
+        InitGame(); // Call InitGame to clear enemies list and setup a new level
+    }
+
+    void OnEnable()
+    {
+        /* Tell OnLevelFinishedLoading to listen for a scene change event 
+        as soon as this script is enabled */
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+    }
+
+    void OnDisable()
+    {
+        /* Tell OnLevelFinishedLoading to stop listening for a scene change
+        event as soon as this script is disabled */
+        // Always have an unsubscription for every delegate you subscribe to
+        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
     }
 
     public void GameOver()
