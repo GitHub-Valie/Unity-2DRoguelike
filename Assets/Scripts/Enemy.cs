@@ -7,6 +7,7 @@ public class Enemy : MovingObject
     public int playerDamage;
     
     public AudioClip enemyAttack1;
+    public AudioClip enemyAttack2;
 
     private Transform target; // Used to store the player's position
     private bool skipMove;
@@ -70,7 +71,7 @@ public class Enemy : MovingObject
         Player hitPlayer = component as Player;
         hitPlayer.HitLoseFood(playerDamage);
         animator.SetTrigger("enemyAttack");
-        SoundManager.instance.PlaySingle(enemyAttack1);
+        SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);
         
         // Debug.Log("Enemy is attacking player");
         // throw new System.NotImplementedException();

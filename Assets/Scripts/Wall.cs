@@ -8,6 +8,7 @@ public class Wall : MonoBehaviour
     public Sprite dmgSprite; // Displayed when the player damages the wall
     public int hp = 4; // Wall health point
     public AudioClip chopSound1;
+    public AudioClip chopSound2;
     
     private SpriteRenderer spriteRenderer;
 
@@ -18,7 +19,7 @@ public class Wall : MonoBehaviour
 
     public void DamageWall(int loss)
     {
-        SoundManager.instance.PlaySingle(chopSound1);
+        SoundManager.instance.RandomizeSfx(chopSound1, chopSound2);
         spriteRenderer.sprite = dmgSprite; // Visual feedback when damaging the wall
         hp -= loss;
         if (hp <= 0)

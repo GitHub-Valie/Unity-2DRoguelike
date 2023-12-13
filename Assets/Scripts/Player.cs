@@ -16,8 +16,11 @@ public class Player : MovingObject // Inheritance
     private Animator animator;
 
     public AudioClip moveSound1;
+    public AudioClip moveSound2;
     public AudioClip eatSound1;
+    public AudioClip eatSound2;
     public AudioClip drinkSound1;
+    public AudioClip drinkSound2;
     public AudioClip gameOverSound;
 
     protected override void Start()
@@ -69,8 +72,7 @@ public class Player : MovingObject // Inheritance
         Move(xDir, yDir, out hit);
         if (hit.transform == null) // If the player was able to move...
         {
-            SoundManager.instance.PlaySingle(moveSound1);
-            // Implement logic to play move sounds randomly
+            SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
         }
 
         CheckIfGameOver(); // Check if food <= 0
@@ -107,8 +109,7 @@ public class Player : MovingObject // Inheritance
             food += pointsPerFood;
             foodText.text = $"+ {pointsPerFood} Food: {food}";
             
-            SoundManager.instance.PlaySingle(eatSound1);
-            // Implement logic to play move sounds randomly
+            SoundManager.instance.RandomizeSfx(eatSound1, eatSound2);
             
             other.gameObject.SetActive(false);
         }
@@ -117,8 +118,7 @@ public class Player : MovingObject // Inheritance
             food += pointsPerSoda;
             foodText.text = $"+ {pointsPerFood} Food: {food}";
             
-            SoundManager.instance.PlaySingle(drinkSound1);
-            // Implement logic to play move sounds randomly
+            SoundManager.instance.RandomizeSfx(drinkSound1, drinkSound2);
             
             other.gameObject.SetActive(false);
         }
