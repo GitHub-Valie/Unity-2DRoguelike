@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Persistence between scenes
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();
-        InitGame(); // Call InitGame to initialize the first level
     }
 
     void InitGame()
