@@ -5,6 +5,9 @@ using UnityEngine;
 public class Enemy : MovingObject
 {
     public int playerDamage;
+    
+    public AudioClip enemyAttack1;
+
     private Transform target; // Used to store the player's position
     private bool skipMove;
     private Animator animator;
@@ -67,6 +70,7 @@ public class Enemy : MovingObject
         Player hitPlayer = component as Player;
         hitPlayer.HitLoseFood(playerDamage);
         animator.SetTrigger("enemyAttack");
+        SoundManager.instance.PlaySingle(enemyAttack1);
         
         // Debug.Log("Enemy is attacking player");
         // throw new System.NotImplementedException();
