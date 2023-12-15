@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
         event as soon as this script is disabled */
         // Always have an unsubscription for every delegate you subscribe to
         SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-        Debug.Log("Level finished loading");
+        // Debug.Log("Level finished loading");
     }
 
     public void GameOver()
